@@ -1,2 +1,2 @@
-# 2017ife-three-column-layout
+# 2017ife
 三栏式布局
