@@ -52,16 +52,79 @@
 				width: 641px;
 				height: 301px;
 			}
+			.cover-1 {
+				width: 191px;
+				height: 301px;
+				background-color: green;
+				position: absolute;
+				top: 0;
+				opacity: 0.3;
+			}
+			.cover-2 {
+				width: 191px;
+				height: 301px;
+				background-color: #CC8091;
+				position: absolute;
+				top: 0;
+				margin-left: 450px;
+				opacity: 0.5;
+			}
 			.top-2-right{
 				position: absolute;
 				top: 0;
 				width: 203px;
 				height: 200px;
 				margin-left: 40px;
-				background: #000;
 			}
 			.top-2-right hr {
 			  margin-top:  0;
+			  height: 2px;
+			  background-color: #cc8091;
+			}
+			.top-2-right div:nth-child(2), .top-2-right div:nth-child(3) {
+				font-size: 24px;
+				font-family: "微软雅黑";
+				color: #000;
+				text-decoration: underline;
+/*			  line-height: 40px;*/
+			  font-variant: small-caps;/*把段落设置为小型大写字母字体s*/
+			}
+			.top-2-right div:nth-child(4) {
+				font-size: 12px;
+				font-family: "楷体";
+				color: #676767;
+				line-height: 10px;
+			}
+			.top-2-right div:nth-child(5) {
+				font-size: 116px;
+				font-family: "微软雅黑";
+				color: #75b86b;
+				font-style: oblique;
+				margin-left: -25px;
+			}
+			.three-two {
+				position: relative;
+			}
+			.three-two span:nth-child(1){
+				font-size: 55px;
+				font-family: "微软雅黑";
+				color: #cc8091;
+			}
+			.three-two span:nth-child(2) {
+				font-size: 21px;
+				font-family: "微软雅黑";
+				color: #cc8091;
+				position: absolute;
+				bottom: 18px;
+				left: 85px;
+			}
+			.three-two span:nth-child(3) {
+				font-size: 12px;
+				font-family: "微软雅黑";
+				color: #676767;
+				position: absolute;
+				bottom: 10px;
+				left: 87px;
 			}
 		</style>
 	</head>
@@ -72,14 +135,27 @@
 				<span>2016.03</span>
 				<hr/>
 			</div>
+			
 			<div class="top-2">
 				<div class="top-2-left">
 					<img src="1.png" />
+					<div class="cover-1"></div>
+					<div class="cover-2"></div>
 				</div>
 				<div class="top-2-right">
 					<hr/>
+					<div>About</div>
+					<div>Technologe</div>
+					<div>About technologe about technologe about technologe</div>
+					<div>700</div>
+					<div class="three-two">
+						<span>3.2</span>
+						<span>CSS</span>
+						<span>cssssccsccscssc</span>
+					</div>
 				</div>
 			</div>
+			
 		</div>
 	</body>
 </html>
