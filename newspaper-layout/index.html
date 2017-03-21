@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>模拟报纸排版</title>
+		<style>
+			body{
+				font-family: "黑体";
+			}
+			.wrap{
+				width: 892px;
+				height: 1386px;
+				background: #ccc;
+				margin: 0 auto;
+				position: relative;
+				padding: 0 44px;
+			}
+			.top-1{
+				position: relative;
+				width: 110px;
+				height: 61px;
+				font-size: 12px;
+				background-color: #d45d5c;
+				color: #fff;
+				margin-bottom: 30px;
+			}
+			.top-1 span{
+				position: absolute;
+				bottom: 3px;
+				margin-left: 5px;
+			}
+			.top-1 span:nth-child(2){
+				right: 0;
+				margin-right: -783px;
+				color: #d45d5c;
+			}
+			.top-1 hr{
+				width: 892px;
+				height: 2px;
+				background: #938E8C;
+				position: absolute;
+				bottom: -10px;
+			}
+			
+			.top-2 {
+				position: relative;
+			}
+			.top-2-left, .top-2-right{
+				display: inline-block;
+			}
+			.top-2-left img{
+				width: 641px;
+				height: 301px;
+			}
+			.top-2-right{
+				position: absolute;
+				top: 0;
+				width: 203px;
+				height: 200px;
+				margin-left: 40px;
+				background: #000;
+			}
+			.top-2-right hr {
+			  margin-top:  0;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<div class="top-1">
+				<span>ife.baidu.com</span>
+				<span>2016.03</span>
+				<hr/>
+			</div>
+			<div class="top-2">
+				<div class="top-2-left">
+					<img src="1.png" />
+				</div>
+				<div class="top-2-right">
+					<hr/>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
