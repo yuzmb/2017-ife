@@ -362,26 +362,40 @@
 			.bottom-4 .last{
 				float: right;
 				width: 160px;
+				margin-top: -5px;
 			}
-			.last span{
+			.last p{
 				font-size: 14px;
 				color: #5A5B5B;
 				font-family: "黑体";
 				font-style: oblique;
 				line-height: 16px;
+				
 			}
-			.last span:nth-child(1){
+			.last span{
 				font-size: 72px;
 				color: #D45D5C;
 				position: relative;
 				top: 30px;
-				left: -30px;
+				left: 0;
+				margin-left: -50px;
 			}
-			.lasst span:nth-child(3){
-				font-size: 72px;
+			.last span:last-child{
+				margin: 0;
+				float: right;
+			}
+			.bottom{
+				margin-top: -80px;
+			}
+			.bottom div{
+				width: 892px;
+				height: 1px;
+				background: #938E8C;
+			}
+			.bottom span{
+				font-size: 12px;
 				color: #D45D5C;
-				position: relative;
-			
+				float: right;
 			}
 		</style>
 	</head>
@@ -475,11 +489,18 @@
 					<p>THREE FOUR FIRE</p>
 					<p id="last">hello word hello word hello word</p>
 				</div>
-				<div class="last">
-					<span>“</span>
-					<span>hello world hello world hello world hello world hello world hello world hello world</span>
-					<span>”</span>
+				<div class="last">				
+					<p>
+						<span>“</span>
+						&nbsp;&nbsp;hello world hello world hello world hello world hello world hello world hello world  hello wrold
+						<span>”</span>
+					</p>					
 				</div>
+			</div>
+		
+		  <div class="bottom">
+				<div></div>
+				<span>ife.baidu.com</span>
 			</div>
 		</div>
 	</body>
