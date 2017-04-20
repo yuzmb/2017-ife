@@ -4,10 +4,267 @@
 		<meta charset="UTF-8">
 		<title>实现常见的技术产品官网的页面架构及样式布局</title>
 		<style>
-			
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font-family: "微软雅黑";
+			}
+			.wrap{
+				width: 1280px;
+				margin: 0 auto;
+				background: #fff;
+			}
+			.header{
+				width: 1280px;
+				height: 55px;
+			}
+		  .header-left{
+		  	float: left;
+		  	margin-left: 60px;
+		  	margin-top: 12px;
+		  }
+		  .header-left span{
+		  	font-size: 23px;
+		  	position: relative;
+		  	margin-left: 8px;
+		  	top: -5px;
+		  }
+		  .header-right{
+		  	float: right;
+		  	margin-right: 43px;
+		  	margin-top: 12px;
+		  }
+		  .header-right span{
+		  	padding: 0 17px 18px 17px;
+		  	cursor: pointer;
+		  	font-size: 15px;
+		  }
+		  .hover{
+		  	border-bottom: 5px solid #E76172;
+		  	color: red;
+		  }
+		  #login img{
+		  	position: relative;
+		  	top: 3px;
+		  	right: 5px;
+		  }
+		  #login{
+		  	color: #E76172;
+		  }
+		  .bg{
+		  	position: relative;
+		  	height: 690px;
+		  	overflow: hidden;
+		  }
+		  .bg img{
+		  	width: 1280px;
+		  }
+		  .bg-text{
+		  	position: absolute;
+		  	top: 230px;
+		  	left: 120px;
+		  }
+		  .bg-text p:nth-child(1){
+		  	color: #fff;
+		  	font-size: 59px;
+		  	margin-top: -15px;
+		  }
+		  .bg-text p:nth-child(2), .bg-text p:nth-child(3){
+		  	color: #fff;
+		  	margin-top: 15px;
+		  	font-size: 21px;
+		  }
+		  .bg-text p:nth-child(3){
+		  	margin: 0;
+		  }
+		  .bg-text button{
+		  	background: #E3474B;
+		  	border: none;
+		  	color: #fff;
+		  	font-size: 33px;
+		  	margin-top: 70px;
+		  	padding: 15px 100px;
+		  	cursor: pointer;
+		  }
+		  .bg-text button:hover{
+		  	background-color: #c33;
+		  	-webkit-transition: all 0.5s;
+		  	border-radius: 12px;
+		  }
+		  .center1{
+		  	width: 1280px;
+		  	height: 250px;
+        position: relative;
+		  }
+		  .four{
+		  	width: 316px;
+		  	height: 250px;
+		  	display: inline-block;
+		  	position: relative;
+		  }
+		  .four img{
+		  	position: absolute;
+		  	top: 38px;
+		  	left: 145px;
+		  }
+		  .four p{
+		  	position: absolute;
+		  	top: 50%;
+		  	width: 165px;
+		  	font-size: 15px;
+		  	left: 50%;
+		  	margin-left: -75px;
+		  	text-align: center;
+		  }
+		  .four .l{
+		  	width: 1.5px;
+		  	height: 50px;
+		  	background: #6D6D6D;
+		  	position: absolute;
+		  	left: 0;
+		  	margin-left: 325px;
+		  }
+		  .center-2{
+		  	height: 360px;
+		  	background: #EBEBEB;
+		  	position: relative;
+		  }
+		  .center-2 img, .center-2 p{
+		  	position: absolute;
+		  	top: 50%;
+		  	left: 50%;
+		  	margin-left: -45px;
+		  	margin-top: -90px;
+		  }
+		  .center-2 p{
+		  	color: #979797;
+		  	font-size: 50px;
+		  	left: 0;
+		  	margin-top: 45px;
+		  	margin-left: 240px;
+		  }
+		  .center-3{
+		  	height: 340px;
+		  	background-image: url(images/3.png);
+		  	position: relative;
+		  }
+		  .center-3 .p1{
+		  	text-align: center;
+		  	color: #fff;
+		  	font-size: 21px;
+		  	padding-top: 50px;
+		  }
+		  .center-3 .p2{
+		  	background: #fff;
+		  	height: 2px;
+		  	width: 30px;
+		  	margin: 10px auto 20px auto;
+		  }
+		  .center-3 .p3{
+		  	color: #fff;
+		  	text-align: center; 	
+		  	font-size: 14px;
+		  	margin-bottom: 50px;
+		  }
+		  
+		  .center-4{
+		  	height: 600px;
+		  	background: #F7F7F7;
+		  }
+		  .select select{
+		  	width: 235px;
+		  	height: 35px;
+		  	color: #818183;
+		  }
+		  .select select option{
+		  	color: red;
+		  }
 		</style>
 	</head>
 	<body>
-		<div></div>
+		<div class="wrap">
+			<div class="header">
+				<div class="header-left">
+					<img src="images/a1.png" />
+					<span>新世界</span>
+				</div>
+				<div class="header-right">
+					<span class="hover">首页</span>
+					<span>最新活动</span>
+					<span>项目介绍</span>
+					<span>爱心社区</span>
+					<span>关于我们</span>
+					<span id="login"><img src="images/a2.png"/>登录</span>
+				</div>
+			</div>
+		  <div class="bg">
+		  	<img src="images/1.png" />
+		  	<div class="bg-text">
+		  		<p>Time of new life</p>
+		  		<p>新时代，年轻的人们让我们一起</p>
+		  		<p>体验新生活，享受新生活</p>
+		  		<button>开始体验</button>
+		  	</div>
+		  </div>
+		  <div class="center1">
+		  	<div class="four">
+		  		<img src="images/b1.png" />
+		  		<p>打造全新世界观，让你更爱你的生活</p>
+		  		<p class="l"></p>
+		  	</div>
+		  	<div class="four">
+		  		<img src="images/b2.png" />
+		  		<p>丰富多彩的公益活动，发挥新世界的主人公意识</p>
+		  		<p class="l"></p>
+		  	</div>
+		  	<div class="four">
+		  		<img src="images/b3.png" />
+		  		<p>时尚的新理念，超前体验未知生活</p>
+		  		<p class="l"></p>
+		  	</div>
+		  	<div class="four">
+		  		<img src="images/b4.png" />
+		  		<p>完善的培养机制，培养你全新的世界观</p>
+		  	</div>
+		  </div>
+		  <div class="center-2">
+		  	<img src="images/b5.png" />
+		  	<p>关于新世界，你不知道的还有什么？</p>
+		  </div>
+		  <div class="center-3">
+		  	<p class="p1">查找新世界城市活动信息</p>
+		  	<p class="p2"></p>
+		  	<p class="p3">每个城市都有不同的活动信息，请自主查询您所需要了解的城市</p>
+		  	<div class="select">
+		  		<select class="select-1">
+		  			<option>国家</option>
+		  			<option>中国</option>
+		  			<option>美国</option>
+		  			<option>日本</option>
+		  		</select>
+		  		<select class="select-2">
+		  			<option>省份</option>
+		  			<option>北京市</option>
+		  			<option>天津市</option>
+		  			<option>河北省</option>
+		  			<option>陕西省</option>
+		  			<option>内蒙古自治区</option>
+		  			<option>辽宁省</option>
+		  		</select>
+		  		<select class="select-3">
+		  			<option>城市</option>
+		  			<option>广州市</option>
+		  			<option>阳江市</option>
+		  			<option>东莞市</option>
+		  		</select>
+		  	</div>
+		  </div>
+		  <div class="center-4">
+		  	
+		  </div>
+		  
+		</div>
 	</body>
 </html>
