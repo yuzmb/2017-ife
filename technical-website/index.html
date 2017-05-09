@@ -173,13 +173,63 @@
 		  	height: 600px;
 		  	background: #F7F7F7;
 		  }
+		  .select{
+		  	margin-left: 125px;
+		  }
 		  .select select{
+		  	/*Chrome和Firefox里面的边框是不一样的，所以复写了一下*/
+		    border: solid 1px #fff;
+		    outline: none;
+		    /*很关键：将默认的select选择框样式清除*/
+		    appearance: none;
+		    -moz-appearance: none;
+		    -webkit-appearance: none;
+		    
 		  	width: 235px;
 		  	height: 35px;
-		  	color: #818183;
+				margin-right: 30px;
+				color: #757476;
+				background: url(images/select.png) no-repeat 205px center;
+				background-color: #fff;
+				padding-left: 5px;
+				
 		  }
 		  .select select option{
-		  	color: red;
+		  	color: #757476;
+		  	background: #E0DFE2;
+		  }
+		  .select button{
+		  	width: 235px;
+		  	height: 35px;
+		  	color: #fff;
+		  	background: #B74543;
+		  	border: none;
+		  	outline: none;
+		  	cursor: pointer;
+		  	font-size: 14px;
+		  }
+		  .center-4 div{
+		  	display: inline-block;
+		  	margin-right: 35px;
+		  }
+		  .center-4 p{
+		  	text-align: center;
+		  	font-size: 14px;
+		  }
+		  .center-4-1 p:nth-child(3),.center-4-2 p:nth-child(2),.center-4-3 p:nth-child(3),.center-4-4 p:nth-child(3){
+		  	color: #B0AFB0;
+		  	font-size: 12px;
+		  }
+		  .center-4-2 p:nth-child(2){
+		  	margin-bottom: 5px;
+		  }
+		  .center-4-2 p span{
+		  	font-size: 22px;
+		  	padding: 0 16px;
+		  }
+		  .center-4-1{
+		  	margin-left: 150px;
+		  	margin-top: 100px;
 		  }
 		</style>
 	</head>
@@ -259,10 +309,30 @@
 		  			<option>阳江市</option>
 		  			<option>东莞市</option>
 		  		</select>
+		  		<button>搜&nbsp;&nbsp;&nbsp;&nbsp;索</button>
 		  	</div>
 		  </div>
 		  <div class="center-4">
-		  	
+		  	<div class="center-4-1">
+		  		<img src="images/c1.png" />
+		  		<p>北京活动</p>
+		  		<p>新社区大联盟</p>
+		  	</div>
+		  	<div class="center-4-2">
+		  		<p><span>上</span><span>海</span><span>活</span><span>动</span></p>
+		  		<p>夜上海新景观探索</p>
+		  		<img src="images/c2.png" />
+		  	</div>
+		  	<div class="center-4-3">
+		  		<img src="images/c3.png" />
+		  		<p>深圳活动</p>
+		  		<p>全新海岸线观点站</p>
+		  	</div>
+		  	<div class="center-4-4">
+		  		<img src="images/c4.png" />
+		  		<p>香港活动</p>
+		  		<p>奢侈消费大派送</p>
+		  	</div>
 		  </div>
 		  
 		</div>
