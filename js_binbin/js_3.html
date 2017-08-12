@@ -54,7 +54,6 @@ function getData() {
     ……
   ]
   */
-
   return data;
 
 }
@@ -64,12 +63,19 @@ function getData() {
  * 返回一个排序后的数组
  */
 function sortAqiData(data) {
-	var arr = data[(data.length / 2) - 0.5][1], arr1 = [];
-	for(var i = 0; i < data.length; i++){
-		if(data[i][1] < arr){
-			arr1.push(data[i]);
+	//冒泡排序
+	for(var i = 0; i < data.length - 1; i++){
+		for(var j = i + 1; j < data.length;  j++){
+			var temi = data[i][1], temj = data[j][1], temi0 = data[i][0], temj0 = data[j][0];
+			if(temi > temj){
+				data[i][1] = temj;
+				data[i][0] = temj0;
+				data[j][1] = temi;
+				data[j][0] = temi0;
+			}
 		}
 	}
+	return data;
 }
 
 /**
@@ -78,7 +84,28 @@ function sortAqiData(data) {
  * 格式见ul中的注释的部分
  */
 function render(data) {
-
+	var resort = document.getElementById('resort'), a = 0;
+  document.getElementById('source').style.display = 'none';
+  if(resort.style.display === ''){
+  	for(var i = 0; i < data.length; i++){
+	  	a++;
+		  var b = document.createElement('b');
+	  	var li = document.createElement('li');
+	  	//方法一
+//	  	b.innerText = data[i][1];
+//		  li.innerText = '第' + a + '名：' + data[i][0] + '：';
+//		  li.appendChild(b);
+//		  resort.appendChild(li);
+			//方法二
+			var node1 = document.createTextNode(data[i][1])
+			var node2 = document.createTextNode('第' + a + '名：' + data[i][0] + '：');
+			b.appendChild(node1);
+			li.appendChild(node2);
+			li.appendChild(b);
+			resort.appendChild(li);
+	  }
+  	resort.style.display = 'block';
+  }
 }
 
 function btnHandle() {
