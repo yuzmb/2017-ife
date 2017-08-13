@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>ife-js基础-4</title>
+		<style>
+			#left-out{margin-left: 20px;}
+			.number{
+				float: left;
+				background: red;
+				color: #fff;
+				margin-right: 5px;
+				font-size: 30px;
+				padding: 0 10px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+    <div id="div-input">
+    	<input type="text" id="input" value="" />
+		  <input type="button" id="left-in" value="左侧入" />
+	  	<input type="button" id="right-in" value="右侧入" />
+		  <input type="button" id="left-out" value="左侧出" />
+	  	<input type="button" id="right-out" value="右侧出" />
+    </div>
+		<!--<div class="number">4</div><div class="number">5</div>
+		-->
+		<script type="text/javascript">
+			(function(){
+				var val = document.getElementById('input');
+				//getElementsByClassName 返回一个数组
+				//左侧入
+				document.getElementById('left-in').onclick = function(){
+					if(val.value !== ''){
+						var create_div = document.createElement('div');
+						var div_text = document.createTextNode(val.value);
+						create_div.setAttribute('class', 'number');
+						create_div.appendChild(div_text);
+						document.body.insertBefore(create_div, document.querySelector('.number'));
+						val.value = '';
+					}
+				}
+				
+				//右侧入
+				document.getElementById('right-in').onclick = function(){
+					if(val.value !== ''){
+						var create_div = document.createElement('div');
+						var div_text = document.createTextNode(val.value);
+						create_div.setAttribute('class', 'number');
+						create_div.appendChild(div_text);
+						var num1 = document.getElementsByClassName('number');
+						var num2 = num1[num1.length];//插在最后一个
+						document.body.insertBefore(create_div, num2);
+						val.value = '';
+					}
+				}
+				
+				//左侧出
+				document.getElementById('left-out').onclick = function(){
+					var div_text = document.querySelector('.number');
+					if(div_text !== null){
+						alert(div_text.innerText);
+				  	document.body.removeChild(div_text);
+					} 
+				}
+				
+				//右侧出
+				document.getElementById('right-out').onclick = function(){
+					var div_text = document.getElementsByClassName('number');
+					var class_number = div_text[div_text.length - 1];
+					if(document.querySelector('.number') !== null){
+						alert(class_number.innerText);
+						document.body.removeChild(class_number);
+					}
+				}
+
+				//点击元素 删除本身				
+				document.body.onclick = function(){
+					if(document.querySelector('.number') !== null){
+						var num = document.querySelectorAll('.number');
+					  //此处两种方法 使得动态添加的div点击函数生效 一种是注释了，一种是用闭包。最重要是找到不变的父元素，这样每次点击获取新的num
+				  	//var ev = ev || window.event, target = ev.target || ev.srcElement;
+				  	for(var i = 0; i < num.length; i++){
+					  	//if(num[i] === target){
+					  		//alert()
+					  	//}
+					  	(function (cur) {   
+       				  num[cur].onclick = function () {   
+         	  	    document.body.removeChild(num[cur]);   
+       				  }   
+    					})(i);
+						}
+					}
+				}
+			})();
+		</script>
+	</body>
+</html>
