@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>ife-js基础-7</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      #box {
+        display: -webkit-flex;
+        display: flex;
+        height: 250px;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        justify-content: space-around;
+        /*每个项目两侧的间隔相等。*/
+        align-items: center;
+        /*垂直居中*/
+        position: relative;
+        width: 50%;
+        left: 50%;
+        transform: translateX(-50%);
+        margin-top: 125px;
+      }
+      
+      #box div {
+        display: -webkit-flex;
+        display: flex;
+        justify-content: space-around;
+        /*每个项目两侧的间隔相等。*/
+        align-items: center;
+        /*垂直居中*/
+        width: 45%;
+        height: 80%;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        background: #fff;
+      }
+      
+      #btn {
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 20px;
+      }
+      
+      #btn input {
+        background: #fff;
+        color: #b0e11e;
+        font-size: 18px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-right: 20px;
+        border-radius: 6px;
+        border: 2px solid #000000;
+      }
+      
+      #btn input:hover {
+        background: #b0e11e;
+        color: #FFFFFF;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="box">
+      <div>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+        <div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    <div id="btn">
+      <input type="button" id="btn1" value="前序遍历" />
+      <input type="button" id="btn2" value="中序遍历" />
+      <input type="button" id="btn3" value="后序遍历" />
+    </div>
+
+    <script type="text/javascript">
+      /*二叉树的遍历有三种方式，如下：
+                         （1）前序遍历（DLR），首先访问根结点，然后遍历左子树，最后遍历右子树。简记根-左-右。
+                         （2）中序遍历（LDR），首先遍历左子树，然后访问根结点，最后遍历右子树。简记左-根-右。
+                         （3）后序遍历（LRD），首先遍历左子树，然后遍历右子树，最后访问根结点。简记左-右-根。 */
+      (function() {
+        var box = document.getElementById('box'),
+          arr = [],
+          temp, bool = false;
+        document.getElementById('btn1').onclick = function(e) {
+          if(!bool) {
+            bool = true;
+            before(box);
+            show();
+          } else {
+            alert('还在遍历中，请稍后！');
+            return false;
+          }
+        }
+        //前序遍历
+        function before(box) {
+          if(box) {
+            arr.push(box);
+            before(box.firstElementChild);
+            before(box.lastElementChild);
+          }
+        }
+
+        document.getElementById('btn2').onclick = function() {
+          if(!bool) {
+            bool = true;
+            center(box);
+            show();
+          } else {
+            alert('还在遍历中，请稍后！');
+            return false;
+          }
+        }
+        //中序遍历
+        function center(box) {
+          if(box) {
+            center(box.firstElementChild);
+            arr.push(box);
+            center(box.lastElementChild);
+          }
+        }
+
+        document.getElementById('btn3').onclick = function() {
+          if(!bool) {
+            bool = true;
+            beyond(box);
+            show();
+          } else {
+            alert('还在遍历中，请稍后！');
+            return false;
+          }
+        }
+        //后序遍历
+        function beyond(box) {
+          if(box) {
+            beyond(box.firstElementChild);
+            beyond(box.lastElementChild);
+            arr.push(box);
+          }
+        }
+
+        //显示遍历效果
+        function show() {
+          for(var i = 0; i < arr.length; i++) {
+            setTimeout(function(i) {
+              return function() {
+                if(temp) {
+                  temp.style.background = '#FFFFFF';
+                }
+                arr[i].style.background = '#b0e11e';
+                temp = arr[i];
+                if(i === arr.length - 1) {
+                  bool = false;
+                  arr = []; //清空arr 防止下次点击遍历出现遍历多次的情况
+                }
+              }
+            }(i), i * 500);
+          }
+        }
+      })();
+    </script>
+  </body>
+
+</html>
