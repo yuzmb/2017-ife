@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>ife-js基础-8</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      #box {
+        display: flex;
+        height: 250px;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        margin: 125px 10px 0 10px;
+        align-items: center;
+        /*垂直居中*/
+        padding: 0 10px;
+      }
+      
+      #box div {
+        display: -webkit-flex;
+        display: flex;
+        justify-content: space-around;
+        /*每个项目两侧的间隔相等。*/
+        align-items: center;
+        /*垂直居中*/
+        width: 45%;
+        height: 80%;
+        border: 2px solid #000000;
+        border-radius: 10px;
+        background: #fff;
+      }
+      
+      #btn {
+        margin: 0 auto;
+        text-align: center;
+        margin-top: 20px;
+      }
+      
+      #btn input {
+        background: #fff;
+        color: #b0e11e;
+        font-size: 18px;
+        padding: 5px 10px;
+        cursor: pointer;
+        margin-right: 20px;
+        border-radius: 6px;
+        border: 2px solid #000000;
+      }
+      
+      #btn input:hover {
+        background: #b0e11e;
+        color: #FFFFFF;
+      }
+      
+      #btn #btn-input {
+        font-size: 22px;
+        cursor: auto;
+        color: #000;
+      }
+      
+      #btn #btn-input:hover {
+        background: #fff;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="box">root
+      <div style="margin-left: 13px;width: 50%;">1
+        <div>1.1
+          <div style="width: 20%;">A</div>
+          <div style="width: 20%;">B</div>
+          <div style="width: 20%;">C</div>
+          <div style="width: 20%;">D</div>
+        </div>
+        <div>1.2
+          <div style="width: 40%;">E</div>
+          <div style="width: 40%;">F</div>
+        </div>
+      </div>
+      <div style="width: 43%;margin-left: 45px;">2
+        <div>2.1
+          <div style="width: 25%;">G</div>
+          <div style="width: 25%;">H</div>
+          <div style="width: 25%;">I</div>
+        </div>
+        <div>2.2
+          <div style="width: 40%;">J</div>
+          <div style="width: 40%;">K</div>
+        </div>
+      </div>
+    </div>
+    <div id="btn">
+      <input type="text" id="btn-input" value="" />
+      <input type="button" id="btn1" value="查询" />
+    </div>
+
+    <script type="text/javascript">
+      /*二叉树的遍历有三种方式，如下：
+                               （1）前序遍历（DLR），首先访问根结点，然后遍历左子树，最后遍历右子树。简记根-左-右。
+                               （2）中序遍历（LDR），首先遍历左子树，然后访问根结点，最后遍历右子树。简记左-根-右。
+                               （3）后序遍历（LRD），首先遍历左子树，然后遍历右子树，最后访问根结点。简记左-右-根。 */
+      (function() {
+        var box = document.getElementById('box'),
+          elem = [],
+          arr = [],
+          temp, bool = false;
+        document.getElementById('btn1').onclick = function(e) {
+          clearTimeout();
+          var value = document.getElementById('btn-input').value;
+          var div = document.getElementById('box').getElementsByTagName('div');
+          if(value === '') {
+            alert('请输入要查询的内容！');
+            return false;
+          }
+          if(!bool && value !== '' && arr[0] === undefined) {
+            for(var i = 0; i < div.length; i++) {
+              div[i].style.background = '#fff';
+            }
+            bool = true;
+            before(box);
+            show(value);
+          } else {
+            alert('还在遍历中，请稍后！');
+            return false;
+          }
+        }
+        //前序遍历
+        function before(box) {
+          if(box) {
+            arr.push(box);
+            for(var i = 0; i < box.children.length; i++) {
+              before(box.children[i]);
+            }
+            //before(box.firstElementChild);
+            //before(box.lastElementChild);
+          }
+        }
+
+        //显示遍历效果
+        function show(value) {
+          for(var i = 0; i < arr.length; i++) {
+            (function(i) {
+              setTimeout(function timer() {
+                if(temp) {
+                  temp.style.background = '#FFFFFF';
+                }
+                if(bool) {
+                  arr[i].style.background = '#b0e11e';
+                  temp = arr[i];
+                }
+                //输入的值被包含在nodevalue中的时候
+                if(~arr[i].firstChild.nodeValue.trim().indexOf(value) || ~value.indexOf(arr[i].firstChild.nodeValue.trim())) {
+                  elem.push(arr[i]);
+                }
+                if(i === arr.length - 1) {
+                  bool = false;
+                  if(elem.length > 0) {
+                    for(var j = 0; j < elem.length; j++) {
+                      elem[j].style.background = '#b0e11e';
+                    }
+                    //arr[i].style.background = '#FFFFFF';
+                    elem = [];
+                    setTimeout(function(){
+                    	arr[i].style.background = "#FFFFFF";
+                    	setTimeout('alert("查询到相似内容！");', 50);
+                    	arr = [];
+                    }, 200);
+                  } else {
+                    setTimeout('alert("没有查询到！")', 50);
+                    arr = [];
+                  }
+                   //清空arr 防止下次点击遍历出现遍历多次的情况
+                }
+              }, i * 200)
+            })(i);
+            //方法二
+            //          setTimeout(function(i) {
+            //            return function() {	              	
+            //              if(temp) {
+            //                temp.style.background = '#FFFFFF';
+            //              }
+            //              if(bool){
+            //              	arr[i].style.background = '#b0e11e';
+            //                temp = arr[i];
+            //              }console.log(arr[i])
+            //              //输入的值被包含在nodevalue中的时候
+            //              if(~arr[i].firstChild.nodeValue.indexOf(value)){
+            //                bool = false;
+            //                temp = false;
+            //              }
+            //              if(i === arr.length - 1) {
+            //                bool = false;
+            //                arr = []; //清空arr 防止下次点击遍历出现遍历多次的情况
+            //              }
+            //            }
+            //          }(i), i * 500);
+          }
+        }
+      })();
+    </script>
+  </body>
+
+</html>
