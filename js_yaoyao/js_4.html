@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>任务四：听指令的小方块（一）</title>
+		<style type="text/css">
+			#wrap{
+				position: absolute;
+				width: 564px;
+				height: 622px;
+				top: 50%;
+				left: 50%;
+				margin-top: -311px;
+				margin-left: -274px;
+			}
+			#box{
+				display: -webkit-flex;
+				display: flex;
+				flex-flow: wrap;
+				width: 510px;
+				border: 2px solid #000000;
+				margin-left: 50px;
+			}
+			#box div{
+				width: 50px;
+				height: 50px;
+				border: 1px solid #ccc;
+				border-right-width: 0;
+				border-bottom-width: 0;
+			}
+			#box-top{
+				display: -webkit-flex;
+				display: flex;
+				flex-flow: wrap;
+				margin-left: 51px;
+			}
+			#box-top div{
+				text-align: center;
+				width: 51px;
+				font-size: 25px;
+				font-family: "微软雅黑";
+			}
+			#box-left div{
+				text-align: center;
+				height: 51px;
+				font-size: 25px;
+				font-family: "微软雅黑";
+			}
+			#box-left{
+				position: absolute;
+				top: 46px;
+			}
+		  #order {
+		  	text-align: center;
+		  	padding: 20px 0;
+		  	margin-left: 60px;
+		  }
+		  #order input{
+		  	margin-right: 10px;
+		  	cursor: pointer;
+		  	border: none;
+		  	padding: 5px 10px;
+		  	color: #fff;
+		  	background: deepskyblue;
+		  	font-size: 18px;
+		  	font-family: "微软雅黑";
+		  	border-radius: 6px;
+		  }
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="box-top">
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+			<div>9</div>
+			<div>10</div>
+		</div>
+		<div id="box">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div id="box-left">
+			<div>1</div>
+			<div>2</div>
+			<div>3</div>
+			<div>4</div>
+			<div>5</div>
+			<div>6</div>
+			<div>7</div>
+			<div>8</div>
+			<div>9</div>
+			<div>10</div>
+		</div>
+		<div id="order">
+			<input type="button" name="" id="start" value="开始" />
+		  <input type="button" name="" id="go" value="向前走" />
+		  <input type="button" name="" id="left" value="向左转" />
+		  <input type="button" name="" id="right" value="向右转" />
+		  <input type="button" name="" id="back" value="向后转" />
+		</div>
+		</div>
+		
+		
+		<script type="text/javascript">
+			//定义全局变量
+			var box = document.getElementById('box'), deg = '0deg';
+			var arr = ['linear-gradient(0deg, rgb(255, 192, 203) 70%, rgb(0, 255, 255) 30%)','linear-gradient(90deg, rgb(255, 192, 203) 70%, rgb(0, 255, 255) 30%)','linear-gradient(180deg, rgb(255, 192, 203) 70%, rgb(0, 255, 255) 30%)','linear-gradient(270deg, rgb(255, 192, 203) 70%, rgb(0, 255, 255) 30%)'];
+			//初始化
+			function init(){
+				document.getElementById('start').onclick = function(){
+					//background: linear-gradient(0deg, #FFC0CB 70%, #00FFFF 30%); 利用css3属性渐变，deg是角度
+					for(var i = 0; i < box.children.length; i++){
+						box.children[i].style.background = 'white';
+						box.children[i].setAttribute('move','');
+					}
+					//获取100内的随机整数
+					var rand = Math.floor(Math.random() * 100 + 1);
+					box.children[rand - 1].style.background = arr[0];
+					box.children[rand - 1].setAttribute('move','top');
+					moveGo();
+					moveLeft();
+					moveRight();
+					moveBack();
+				}
+			}
+			
+			function moveGo(){
+				document.getElementById('go').onclick = function(){
+					for(var i = 0; i < box.children.length; i++){
+						if(box.children[i].getAttribute('move') === 'top'){
+							if(i - 10 >= 0 && deg === '0deg'){console.log(deg,i)
+								box.children[i - 10].style.background = arr[0];
+								box.children[i - 10].setAttribute('move','top');
+								box.children[i].style.background = 'white';
+						    box.children[i].setAttribute('move','');
+							}else if(deg === '90deg'){console.log(deg,i)
+								box.children[i + 1].style.background = arr[1];
+								box.children[i + 1].setAttribute('move','top');
+								box.children[i].style.background = 'white';
+						    box.children[i].setAttribute('move','');
+							}
+							else{
+								alert('GFW在此，岂容你放肆！');
+							}
+						}
+					}
+				}
+			}
+			
+			function moveLeft(){
+				document.getElementById('left').onclick = function(){
+					for(var i = 0; i < box.children.length; i++){
+						if(box.children[i].getAttribute('move') === 'top'){
+							if(deg === '0deg'){
+								box.children[i].style.background = arr[3];
+								deg = '270deg';
+								return false;
+							}
+							if(deg === '270deg'){
+								box.children[i].style.background = arr[2];
+								deg = '180deg';
+								return false;
+							}
+							if(deg === '180deg'){
+								box.children[i].style.background = arr[1];
+								deg = '90deg';
+								return false;
+							}
+							if(deg === '90deg'){
+								box.children[i].style.background = arr[0];
+								deg = '0deg';
+								return false;
+							}
+						}
+					}
+				}
+			}
+			
+			function moveRight(){
+				document.getElementById('right').onclick = function(){
+					for(var i = 0; i < box.children.length; i++){
+						if(box.children[i].getAttribute('move') === 'top'){
+							if(deg === '0deg'){
+								box.children[i].style.background = arr[1];
+								deg = '90deg';
+								return false;
+							}
+							if(deg === '90deg'){
+								box.children[i].style.background = arr[2];
+								deg = '180deg';
+								return false;
+							}
+							if(deg === '180deg'){
+								box.children[i].style.background = arr[3];
+								deg = '270deg';
+								return false;
+							}
+							if(deg === '270deg'){
+								box.children[i].style.background = arr[0];
+								deg = '0deg';
+								return false;
+							}
+						}
+					}
+				}
+			}
+			
+			function moveBack(){
+				document.getElementById('back').onclick = function(){
+					
+				}
+			}
+			
+			window.onload = function(){
+				init();
+			}
+		</script>
+	</body>
+</html>

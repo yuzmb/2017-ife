@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>任务三：表单（三）联动</title>
+    <style type="text/css">
+      body {
+        font-family: "微软雅黑";
+      }
+      
+      #id1 {
+        margin-bottom: 40px;
+        margin-left: 90px;
+      }
+      
+      #id1 span {
+        margin-right: 200px;
+      }
+      
+      #id2 span,
+      #id3 span {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 17px;
+      }
+      
+      #id2 select {
+        width: 130px;
+        height: 30px;
+        font-size: 18px;
+        padding: 0 5px;
+        border-radius: 5px;
+        margin-right: 50px;
+      }
+      
+      #id2 select:nth-child(3) {
+        width: 200px;
+        margin-right: 0;
+      }
+      
+      #id3 {
+        display: none;
+      }
+      
+      #id3 input {
+        width: 385px;
+        height: 30px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="id1">
+      <input type="radio" name="raido" id="in-school" checked="checked" /><span>在校生</span>
+      <input type="radio" name="raido" id="not-in-school" /><span>非在校生</span>
+    </div>
+    <div id="id2">
+      <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学校</span>
+      <select name="city">
+        <option selected="selected" value="1">北京</option>
+        <option value="2">上海</option>
+        <option value="3">广州</option>
+        <option value="4">深圳</option>
+      </select>
+      <select name="school">
+        <option selected="selected" value="1">北京大学</option>
+        <option value="2">清华大学</option>
+        <option value="3">人民大学</option>
+        <option value="4">航空大学</option>
+      </select>
+    </div>
+    <div id="id3">
+      <span>就业单位</span>
+      <input type="text" id="" value="" />
+    </div>
+
+    <script type="text/javascript">
+      //定义全局变量
+      var arr = {
+        '北京': ['北京大学', '清华大学', '人民大学', '航空大学'],
+        '上海': ['交通大学', '复旦大学', '财经大学', '上海大学', '你猜吧啊'],
+        '广州': ['广州大学', '工业大学', '中山大学'],
+        '深圳': ['深圳大学', '财经大学', '没有大学', '你猜吧啊', '很多大学', '以后会有']
+      };
+      //console.log(arr['北京'])
+
+      //切换函数
+      function select() {
+        document.getElementById('in-school').onclick = function() {
+          document.getElementById('id2').style.display = 'block';
+          document.getElementById('id3').style.display = 'none';
+        }
+        document.getElementById('not-in-school').onclick = function() {
+          document.getElementById('id2').style.display = 'none';
+          document.getElementById('id3').style.display = 'block';
+        }
+      }
+
+      //查找城市对应的学校
+      function search() {
+        var sel = document.getElementById('id2').getElementsByTagName('select')[0];
+        var change = document.getElementById('id2').getElementsByTagName('select')[1];
+        sel.onchange = function() {
+          //console.log(this.options[i].text) //获取text 相当于innerText
+          var index = this.selectedIndex; //获取索引值
+          var text = this.options[index].text; //console.log(arr[text].length)
+          var num = arr[text].length - change.options.length; //考虑如果arr里的大学比4大
+          for(var j = 0; j < num; j++) {
+            var create_option = document.createElement('option');
+            change.appendChild(create_option);
+          }
+          for(var i = 0; i < arr[text].length; i++) {
+            change.options[i].text = arr[text][i];
+          }
+          //如果没有那么多大学 那么之前切换的就要删掉，遍历，每次都删掉最后一个option节点
+          if(num < 0) {
+            for(var k = 0; k < -num; k++) {
+              change.removeChild(change.lastElementChild);
+            }
+          }
+        }
+      }
+
+      window.onload = function() {
+        select();
+        search();
+      }
+    </script>
+  </body>
+
+</html>
