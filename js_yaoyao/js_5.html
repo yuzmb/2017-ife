@@ -3,23 +3,23 @@
 
   <head>
     <meta charset="UTF-8">
-    <title>任务四：听指令的小方块（一）</title>
+    <title>任务五：听指令的小方块（二）</title>
     <style type="text/css">
       #wrap {
         position: absolute;
-        width: 564px;
-        height: 622px;
+        width: 574px;
+        height: 646px;
         top: 50%;
         left: 50%;
-        margin-top: -311px;
-        margin-left: -274px;
+        margin-top: -323px;
+        margin-left: -287px;
       }
       
       #box {
         display: -webkit-flex;
         display: flex;
         flex-flow: wrap;
-        width: 510px;
+        width: 520px;
         border: 2px solid #000000;
         margin-left: 50px;
       }
@@ -28,8 +28,6 @@
         width: 50px;
         height: 50px;
         border: 1px solid #ccc;
-        border-right-width: 0;
-        border-bottom-width: 0;
       }
       
       #box-top {
@@ -58,13 +56,13 @@
         top: 46px;
       }
       
-      #order {
+      .order {
         text-align: center;
-        padding: 20px 0;
+        padding: 5px 0;
         margin-left: 60px;
       }
       
-      #order input {
+      .order input {
         margin-right: 10px;
         cursor: pointer;
         border: none;
@@ -74,6 +72,19 @@
         font-size: 18px;
         font-family: "微软雅黑";
         border-radius: 6px;
+      }
+      
+      /*指定animation动画 名称 此处不考虑webkit*/     
+      @keyframes move {
+        0% {
+          background: linear-gradient(0deg, rgb(0, 255, 255) 30%, white 30%);
+        }
+        50% {
+          background: linear-gradient(0deg, rgb(255, 192, 203) 30%, rgb(0, 255, 255) 70%, white 30%);
+        }
+        100% {
+          background: linear-gradient(0deg, rgb(255, 192, 203) 70%, rgb(0, 255, 255) 30%);
+        }
       }
     </style>
   </head>
@@ -206,12 +217,17 @@
         <div>9</div>
         <div>10</div>
       </div>
-      <div id="order">
+      <div class="order">
         <input type="button" name="" id="start" value="开始" />
         <input type="button" name="" id="go" value="向前走" />
         <input type="button" name="" id="left" value="向左转" />
         <input type="button" name="" id="right" value="向右转" />
         <input type="button" name="" id="back" value="向后转" />
+      </div>
+      <div class="order">
+        <input type="button" name="" id="_left" value="向左转 + 走" />
+        <input type="button" name="" id="_right" value="向右转 + 走" />
+        <input type="button" name="" id="_back" value="向后转 + 走" />
       </div>
     </div>
 
@@ -227,6 +243,9 @@
           for(var i = 0; i < box.children.length; i++) {
             box.children[i].style.background = 'white';
             box.children[i].setAttribute('move', '');
+            box.children[i].style.transform = '';
+            box.children[i].style.transition = '';
+            box.children[i].style.animation = '';
           }
           //获取100内的随机整数
           var rand = Math.floor(Math.random() * 100 + 1);
@@ -237,6 +256,7 @@
           moveLeft();
           moveRight();
           moveBack();
+          _move(); //下面的指令
         }
       }
 
@@ -245,26 +265,44 @@
           for(var i = 0; i < box.children.length; i++) {
             if(box.children[i].getAttribute('move') === 'top') {
               if(i - 10 >= 0 && deg === '0deg') {
-                box.children[i - 10].style.background = arr[0];
+                //box.children[i - 10].style.background = arr[0];
+                box.children[i - 10].style.background = box.children[i].style.background;
+                box.children[i - 10].style.transform = box.children[i].style.transform;
+                box.children[i - 10].style.animation = '1s move';
                 box.children[i - 10].setAttribute('move', 'top');
                 box.children[i].style.background = 'white';
+                box.children[i].style.transform = '';
+                box.children[i].style.transition = '';
+                box.children[i].style.animation = '';
                 box.children[i].setAttribute('move', '');
                 return false;
               } else if(deg === '90deg') {
-                //9是靠墙的 不能在向前走
-                if(~(i + '').indexOf('9')) {
+                //9是靠墙的 不能在向前走 //不写~(i + '').indexOf('9') 是因为最后一行是90~99
+                if(i % 10 === 9) {
                   alert('GFW在此，岂容你放肆！');
                   return false;
                 }
-                box.children[i + 1].style.background = arr[1];
+                //box.children[i + 1].style.background = arr[1];
+                box.children[i + 1].style.background = box.children[i].style.background;
+                box.children[i + 1].style.transform = box.children[i].style.transform;
+                box.children[i + 1].style.animation = '1s move';
                 box.children[i + 1].setAttribute('move', 'top');
                 box.children[i].style.background = 'white';
+                box.children[i].style.transform = '';
+                box.children[i].style.transition = '';
+                box.children[i].style.animation = '';
                 box.children[i].setAttribute('move', '');
                 return false; //跳出循环
               } else if(i + 10 < 99 && deg === '180deg') {
-                box.children[i + 10].style.background = arr[2];
+                //box.children[i + 10].style.background = arr[2];
+                box.children[i + 10].style.background = box.children[i].style.background;
+                box.children[i + 10].style.transform = box.children[i].style.transform;
+                box.children[i + 10].style.animation = '1s move';
                 box.children[i + 10].setAttribute('move', 'top');
                 box.children[i].style.background = 'white';
+                box.children[i].style.transform = '';
+                box.children[i].style.transition = '';
+                box.children[i].style.animation = '';
                 box.children[i].setAttribute('move', '');
                 return false;
               } else if(deg === '270deg') {
@@ -273,9 +311,15 @@
                   alert('GFW在此，岂容你放肆！');
                   return false;
                 }
-                box.children[i - 1].style.background = arr[3];
+                //box.children[i - 1].style.background = arr[3];
+                box.children[i - 1].style.background = box.children[i].style.background;
+                box.children[i - 1].style.transform = box.children[i].style.transform;
+                box.children[i - 1].style.animation = '1s move';
                 box.children[i - 1].setAttribute('move', 'top');
                 box.children[i].style.background = 'white';
+                box.children[i].style.transform = '';
+                box.children[i].style.transition = '';
+                box.children[i].style.animation = '';
                 box.children[i].setAttribute('move', '');
                 return false; //跳出循环
               } else {
@@ -292,22 +336,30 @@
           for(var i = 0; i < box.children.length; i++) {
             if(box.children[i].getAttribute('move') === 'top') {
               if(deg === '0deg') {
-                box.children[i].style.background = arr[3];
+                //box.children[i].style.background = arr[3];
+                box.children[i].style.transform = 'rotate(270deg)';
+                box.children[i].style.transition = 'transform 1s ease-in';
                 deg = '270deg';
                 return false;
               }
               if(deg === '270deg') {
-                box.children[i].style.background = arr[2];
+                //box.children[i].style.background = arr[2];
+                box.children[i].style.transform = 'rotate(180deg)';
+                box.children[i].style.transition = 'transform 1s ease-in';
                 deg = '180deg';
                 return false;
               }
               if(deg === '180deg') {
-                box.children[i].style.background = arr[1];
+                //box.children[i].style.background = arr[1];
+                box.children[i].style.transform = 'rotate(90deg)';
+                box.children[i].style.transition = 'transform 1s ease-in';
                 deg = '90deg';
                 return false;
               }
               if(deg === '90deg') {
-                box.children[i].style.background = arr[0];
+                //box.children[i].style.background = arr[0];
+                box.children[i].style.transform = 'rotate(0deg)';
+                box.children[i].style.transition = 'transform 1s ease-in';
                 deg = '0deg';
                 return false;
               }
@@ -321,22 +373,30 @@
           for(var i = 0; i < box.children.length; i++) {
             if(box.children[i].getAttribute('move') === 'top') {
               if(deg === '0deg') {
-                box.children[i].style.background = arr[1];
+                //box.children[i].style.background = arr[1];
+                box.children[i].style.transform = 'rotate(90deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '90deg';
                 return false;
               }
               if(deg === '90deg') {
-                box.children[i].style.background = arr[2];
+                //box.children[i].style.background = arr[2];
+                box.children[i].style.transform = 'rotate(180deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '180deg';
                 return false;
               }
               if(deg === '180deg') {
-                box.children[i].style.background = arr[3];
+                //box.children[i].style.background = arr[3];
+                box.children[i].style.transform = 'rotate(270deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '270deg';
                 return false;
               }
               if(deg === '270deg') {
-                box.children[i].style.background = arr[0];
+                //box.children[i].style.background = arr[0];
+                box.children[i].style.transform = 'rotate(0deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '0deg';
                 return false;
               }
@@ -350,27 +410,64 @@
           for(var i = 0; i < box.children.length; i++) {
             if(box.children[i].getAttribute('move') === 'top') {
               if(deg === '0deg') {
-                box.children[i].style.background = arr[2];
+                //box.children[i].style.background = arr[2];
+                box.children[i].style.transform = 'rotate(180deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '180deg';
                 return false;
               }
               if(deg === '90deg') {
-                box.children[i].style.background = arr[3];
+                //box.children[i].style.background = arr[3];
+                box.children[i].style.transform = 'rotate(270deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '270deg';
                 return false;
               }
               if(deg === '180deg') {
-                box.children[i].style.background = arr[0];
+                //box.children[i].style.background = arr[0];
+                box.children[i].style.transform = 'rotate(0deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '0deg';
                 return false;
               }
               if(deg === '270deg') {
-                box.children[i].style.background = arr[1];
+                //box.children[i].style.background = arr[1];
+                box.children[i].style.transform = 'rotate(90deg)';
+                box.children[i].style.transition = 'transform 1s ease-out';
                 deg = '90deg';
                 return false;
               }
             }
           }
+        }
+      }
+
+      //相当于jQuery的trigger方法，但jq不是用这种方法封装。
+      function afterGo(go) {
+        if(document.all) {
+          document.getElementById(go).click();
+        } else {
+          var evt = document.createEvent("MouseEvents"); //还有onchange则是HtmlEvents  
+          evt.initEvent("click", true, true);
+          document.getElementById(go).dispatchEvent(evt);
+        }
+      }
+
+      function _move() {
+        //向左转 + 走
+        document.getElementById('_left').onclick = function() {
+          afterGo("left");
+          setTimeout('afterGo("go")', 1300);
+        }
+        //向右转 + 走
+        document.getElementById('_right').onclick = function() {
+          afterGo("right");
+          setTimeout('afterGo("go")', 1300);
+        }
+        //向后转 + 走
+        document.getElementById('_back').onclick = function() {
+          afterGo("back");
+          setTimeout('afterGo("go")', 1300);
         }
       }
 
