@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>任务六：UI组件之浮出层</title>
+		<style type="text/css">
+			body{
+				font-size: 18px;
+				font-family: "微软雅黑";
+				
+			}
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#mask{
+				opacity: 0.5;
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: #000000;
+				display: none;
+			}
+			#mask.over{
+				border: 1px dashed #000000;
+				background: red;
+			}
+			#box{
+				position: fixed;
+				z-index: 1;
+				background: #FFFFFF;
+				width: 500px;
+				height: 200px;
+				border: 2px solid #000000;
+				top: 50%;
+				left: 50%;
+				margin-top: -100px;
+				margin-left: -250px;
+				display: none;
+				cursor: move;
+			}
+			#box p{
+				background: #767777;
+				color: #FFFFFF;
+				padding: 10px 10px;
+				margin-bottom: 10px;
+			}
+			#box span{
+				padding:0 10px;
+			}
+			#btn1, #btn2{
+				border: 1px solid dodgerblue;
+				background: deepskyblue;
+				font-size: 18px;
+				padding: 10px 40px;
+				color: #FFFFFF;
+				position: absolute;
+				bottom: 10px;
+				cursor: pointer;
+			}
+			#btn2{
+				right: 10px;
+			}
+			#btn1{
+				right: 150px;
+			}
+			#show{
+				border: 1px solid dodgerblue;
+				background: deepskyblue;
+				font-size: 18px;
+				padding: 10px 40px;
+				color: #FFFFFF;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -23px;
+				margin-left: -86px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="mask"></div>
+		<div draggable="true" id="box">
+				<p>这是一个浮出层</p>
+				<span>这是一个浮出层</span>
+				<div id="btn">
+					<input type="button" id="btn1" value="确定" />
+				  <input type="button" id="btn2" value="取消" />
+				</div>
+			</div>
+		<div id="show">浮出层展现</div>
+		
+		<script type="text/javascript">
+			function init(){
+				//展现浮出层
+				document.getElementById('show').onclick = function(){
+					document.getElementById('mask').style.display = 'block';
+					document.getElementById('box').style.display = 'block';
+				}
+				//关闭浮出层
+				document.getElementById('btn1').addEventListener('click',close,false);
+				document.getElementById('btn2').addEventListener('click',close,false);
+				document.getElementById('mask').addEventListener('click',close,false);
+			}
+			
+			function close(){
+				document.getElementById('mask').style.display = 'none';
+				document.getElementById('box').style.display = 'none';
+			}
+			
+			//换种写法 以后就用这种
+			//拖拽
+			var drag = {
+				init: function(){
+					//var me = this;//alert(me === drag) //true this指的是drag
+					this.src = document.getElementById('box');
+					this.panel = document.getElementById('mask');//mask宽高都是100% 比box大，能作为接收的容器
+          //获取鼠标坐标的布尔值
+          this.dargging = true;
+          
+					// 为拖拽源监听dragstart,设置关联数据
+          this.src.addEventListener('dragstart', this.onDragStart, false);
+
+          // 拖拽鼠标移入元素,在拖放目标上设置视觉反馈
+          this.panel.addEventListener('dragenter', this.onDragEnter, false);
+
+          // 取消元素dragover默认行为,使其可拖放
+          this.panel.addEventListener('dragover', this.onDragOver, false);
+
+          // 拖拽移出元素,清除视觉反馈
+          this.panel.addEventListener('dragleave', this.onDragLeave, false);
+
+          // 鼠标释放,在拖放目标上接收数据并处理
+          this.panel.addEventListener('drop', this.onDrop, false);
+          
+          //鼠标mousedown、mousemove、mouseup事件 获取box的坐标值
+          this.src.addEventListener('mousedown', this.onMouseDown, false);
+          this.src.addEventListener('mousemove', this.onMouseMove, false);
+          this.src.addEventListener('mouseup', this.onMouseUp, false);
+				},
+				onDragStart: function(e){
+					e.dataTransfer.setData('text/plain', e.target.id);
+				},
+				onDragEnter: function(e){
+					e.target.classList.add('over');
+					// this  此处this指向mask的div,也就是panel
+					//console.log(this === drag.panel) true
+					
+				},
+				onDragLeave: function(e){
+					e.target.classList.remove('over');
+				},
+				onDragOver: function(e){
+					e.preventDefault();
+				},
+				onDrop: function(e){
+					//var id = e.dataTransfer.getData('text/plain');
+					//var src = document.getElementById(id);
+					//src.style.position = 'relative';
+					//src.style.top = '0';
+					//src.style.left = '0';
+					//src.style.marginLeft = '0';
+					//src.style.marginTop = '0';
+			    //append到body最后一个子元素，防止box的z-index失效
+			    //document.body.appendChild(src);
+          e.target.classList.remove('over');
+				},
+				getMouseXY: function(e){
+					/*鼠标位置可以在 event 对象中获得，常用的属性有：
+          clientX / clientY : 相对浏览器窗口坐标
+          offsetX / offsetY : 相对事件目标对象坐标
+          pageX / pageY : 相对 document 对象坐标
+                          一般鼠标的位置使用 pageX / pageY 获取，但是 IE 不支持这两个属性。
+                         所以在 IE 中使用 event.clientX + document.body.scrollLeft - document.body.clientLeft; 获取鼠标的位置。*/
+					var x = 0; y = 0;
+					e = e || window.event;
+					if(e.pageX){
+						x = e.pageX;
+						y = e.pageY;
+					}else{
+						x = e.clientX + document.body.scrollLeft - document.body.clientLeft;
+						y = e.clientY + document.body.scrollTop - document.body.clientTop;
+					}
+					return {
+						x: x,
+						y: y
+					};
+				},
+				onMouseDown: function(e){
+					boxX = this.offsetLeft;//为元素左上角相对于已定位的父元素（相对或者绝对定位的父元素）的偏移的像素值，即元素左上角的坐标。
+					boxY = this.offsetTop;
+					mouseX = parseInt(drag.getMouseXY(e).x);
+					mouseY = parseInt(drag.getMouseXY(e).y);
+					offsetX = mouseX - boxX;
+					offsetY = mouseY - boxY;//offsetX/ offsetY 是鼠标相对于元素坐标（左上角坐标）的坐标。
+					//console.log(offsetX)
+				},
+				onMouseMove: function(e){
+					if(drag.dargging){
+						var x = drag.getMouseXY(e).x - offsetX;
+						var y = drag.getMouseXY(e).y - offsetY;
+						var width = document.documentElement.clientWidth - box.offsetWidth;
+            var height = document.documentElement.clientHeight - box.offsetHeight;
+            x = Math.min(Math.max(0, x), width);
+            y = Math.min(Math.max(0, y), height);
+            this.style.left = x + 'px';
+            this.style.top = y + 'px';
+					}
+				},
+				onMouseUp: function(){
+					drag.dargging = false;
+				}
+		  }
+			
+			drag.init();
+			
+			window.onload = function(){
+				init();//初始化
+			}
+		</script>
+	</body>
+</html>
