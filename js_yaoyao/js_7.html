@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>任务七：UI组件之排序表格</title>
+    <style type="text/css">
+      * {
+        margin: 0;
+        padding: 0;
+      }
+      
+      #wrap {
+        display: -webkit-flex;
+        display: flex;
+        flex-flow: wrap;
+        width: 760px;
+        border: 1px solid #D6D6D6;
+        position: relative;
+      }
+      
+      #wrap div {
+        width: 150px;
+        height: 50px;
+        border: 1px solid #D6D6D6;
+        text-align: center;
+        line-height: 50px;
+        font-size: 25px;
+        font-family: "微软雅黑";
+      }
+      
+      #wrap .thead {
+        background: #5C5C5C;
+        color: #FFFFFF;
+      }
+      
+      .up {
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-bottom: 13px solid #FFFFFF;
+        cursor: pointer;
+        position: absolute;
+        margin-left: 25px;
+        margin-top: 7px;
+      }
+      
+      .down {
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 13px solid #FFFFFF;
+        cursor: pointer;
+        position: absolute;
+        margin-left: 25px;
+        margin-top: 28px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!--<div id="wrap">
+			<div class="thead">姓名</div>
+			<div class="thead">语文<span class="up"></span><span class="down"></span></div>
+			<div class="thead">数学<span class="up"></span><span class="down"></div>
+			<div class="thead">英语<span class="up"></span><span class="down"></div>
+			<div class="thead">总分<span class="up"></span><span class="down"></div>
+			<div class="tbody">是地方适合</div>
+			<div class="tbody">80</div>
+		</div>-->
+    <script type="text/javascript">
+      (function() {
+        var dns = {
+          init: function() {
+            //创建数据接口
+            this.dataHead = ['姓名', '语文', '数学', '英语', '总分'];
+            this.dataBody = [
+              ['小明', '80', '90', '100', '270'],
+              ['小红', '90', '60', '95', '245'],
+              ['小亮', '60', '100', '70', '230']
+            ];
+            this.len1 = this.dataHead.length; //5
+            this.len2 = this.dataBody.length * this.dataBody[0].length; //15
+
+            //利用数据接口创建表格
+            this.wrap = document.createElement('div');
+            this.wrap.setAttribute('id', 'wrap');
+            this.createTableHead();
+            this.createTableBody();
+
+            //添加排序事件
+            this.sortUp = document.querySelectorAll('.up');
+            this.sortDown = document.querySelectorAll('.down');
+            //升序 最大值在最后。 降序，最大值在第一个
+            for(var i = 0; i < this.sortUp.length; i++) {
+              this.sortUp[i].addEventListener('click', this.onClickUp, false);
+              this.sortDown[i].addEventListener('click', this.onClickDown, false);
+            }
+          },
+          createTableHead: function() {
+            //创建表头
+            for(var i = 0; i < this.len1; i++) {
+              this.thead = document.createElement('div');
+              this.thead.classList.add('thead');
+              this.thead.classList.add('t' + i); //方便找到每列对应的数字
+              this.up = document.createElement('span');
+              this.up.classList.add('up');
+              this.down = document.createElement('span');
+              this.down.classList.add('down');
+              var text1 = document.createTextNode(this.dataHead[i]);
+              this.thead.appendChild(text1);
+              if(i > 0) {
+                this.thead.appendChild(this.up);
+                this.thead.appendChild(this.down);
+              }
+              this.wrap.appendChild(this.thead);
+              document.body.appendChild(this.wrap);
+            }
+          },
+          createTableBody: function() {
+            //创建表身体
+            for(var j = 0; j < this.dataBody.length; j++) {
+              for(var k = 0; k < this.dataBody[0].length; k++) {
+                this.tbody = document.createElement('div');
+                this.tbody.classList.add('tbody');
+                this.tbody.classList.add('t' + k); //方便找到每列对应的数字
+                var text2 = document.createTextNode(this.dataBody[j][k]);
+                this.tbody.appendChild(text2);
+                this.wrap.appendChild(this.tbody);
+                document.body.appendChild(this.wrap);
+              }
+            }
+          },
+          onClickUp: function() {
+            //console.log(this.parentElement.classList.contains('t1'))检测是否包含class
+            //数组排序
+            for(var i = 0; i < dns.dataHead.length; i++) {
+              if(this.parentElement.classList.contains('t' + i)) {
+                //冒泡排序算法
+                //console.log(dns.dataBody[0][i])
+                for(var j = 0; j < dns.dataBody.length - 1; j++) {
+                  for(var k = j + 1; k < dns.dataBody.length; k++) {
+                    var temp1 = parseInt(dns.dataBody[j][i]);
+                    var temp2 = parseInt(dns.dataBody[k][i]);
+                    var temp3 = dns.dataBody[j];
+                    var temp4 = dns.dataBody[k];
+                    if(temp1 > temp2) {
+                      //前比后大，交换顺序
+                      dns.dataBody[k] = temp3;
+                      dns.dataBody[j] = temp4;
+                    }
+                  }
+                }
+                //删除tbody 再重新创建
+                while(document.getElementsByClassName('tbody').length) {
+                  dns.wrap.removeChild(document.getElementsByClassName('tbody')[0]);
+                }
+                dns.createTableBody();
+              }
+            }
+          },
+          onClickDown: function() {
+            for(var i = 0; i < dns.dataHead.length; i++) {
+              if(this.parentElement.classList.contains('t' + i)) {
+                for(var j = 0; j < dns.dataBody.length - 1; j++) {
+                  for(var k = j + 1; k < dns.dataBody.length; k++) {
+                    var temp1 = parseInt(dns.dataBody[j][i]);
+                    var temp2 = parseInt(dns.dataBody[k][i]);
+                    var temp3 = dns.dataBody[j];
+                    var temp4 = dns.dataBody[k];
+                    if(temp1 < temp2) {
+                      dns.dataBody[k] = temp3;
+                      dns.dataBody[j] = temp4;
+                    }
+                  }
+                }
+                while(document.getElementsByClassName('tbody').length) {
+                  dns.wrap.removeChild(document.getElementsByClassName('tbody')[0]);
+                }
+                dns.createTableBody();
+              }
+            }
+          }
+        }
+
+        dns.init(); //初始化
+      })();
+    </script>
+  </body>
+
+</html>
