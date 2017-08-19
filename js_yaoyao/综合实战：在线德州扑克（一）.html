@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>综合实战：在线德州扑克（一）</title>
+		<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			body{
+				font-family: "微软雅黑";
+			}
+			#wrap{
+				margin-left: 20px;
+				position: absolute;
+				width: 1050px;
+				height: 720px;
+        overflow: hidden;
+        top: 50%;
+        left: 50%;
+        margin-left: -525px;
+        margin-top: -360px;
+			}
+			#box1{
+				float: left;
+				width: 470px;
+        height: 630px;
+        border: 1px solid #D6D6D6;
+        padding: 0 10px;
+        border-radius: 10px;
+			}
+			#box2{
+				float: right;
+				width: 500px;
+        height: 630px;
+        border: 1px solid #D6D6D6;
+        padding: 0 10px;
+        border-radius: 10px;
+			}
+			#banker, #play1, #play2, #play3, #play4,#one,#two,#three,#four{
+				margin: 20px 0;
+			}
+			#wrap span{
+				position: relative;
+				top: -40px;
+			}
+			/*.fk, .mh, .ax, .ht{
+				width: 60px;
+				height: 100px;
+				border: 1px solid #D6D6D6;
+				font-size: 40px;
+				text-align: center;
+				line-height: 55px;
+				border-radius: 8px ;
+				position: relative;
+				display: inline-block;
+				margin: 0 10px;
+			}*/
+			.border{
+				width: 60px;
+				height: 100px;
+				border: 1px solid #D6D6D6;
+				font-size: 40px;
+				text-align: center;
+				line-height: 56px;
+				border-radius: 8px ;
+				position: relative;
+				display: inline-block;
+				margin: 0 10px;
+			}
+			.fk, .ax{
+				color: #FF0000;
+			}
+			.fk p, .mh p, .ax p, .ht p{
+				position: relative;
+			  top: -8px;
+			}
+			.fk p:before{
+				content: "♦";
+				color: #ff0000;
+			}
+			.mh p:before{
+				content: "♣";
+        color: #000;
+			}
+			.ax p:before{
+				content: "♥";
+        color: #ff0000;
+			}
+			.ht p:before{
+				content: "♠";
+        color: #000;
+			}
+			#box3{
+				float: left;
+        text-align: center;
+        width: 1000px;
+        margin-top: 40px;
+			}
+			#box3 input{
+				border: none;
+				background: #4b92d1;
+				color: #FFFFFF;
+				font-size: 20px;
+				padding: 10px 30px;
+				border-radius:6px ;
+				margin-left: 30px;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrap">
+			<div id="box1">
+				<div id="banker">
+					<span>庄家</span>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="play1">
+					<span>小明</span>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="play2">
+					<span>小红</span>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="play3">
+					<span>小宝</span>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="play4">
+					<span>小花</span>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+			</div>
+			<div id="box2">
+				<div id="one">
+					<span>1、</span>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="two">
+					<span>2、</span>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="three">
+					<span>3、</span>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+				<div id="four">
+				<span>4、</span>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+					<div class="border"></div>
+				</div>
+			</div>
+		  <div id="box3">
+		  	<input type="button" id="btn1" value="发牌" />
+		  	<input type="button" id="btn2" value="比较" />
+		  	<input type="button" id="btn3" value="重置" />
+		  </div>
+		</div>
+		
+		<script type="text/javascript">
+			(function(){
+				var dns = {
+					init: function(){
+						//定义变量
+						this.btn1 = document.getElementById('btn1');
+						this.btn2 = document.getElementById('btn2');
+						this.btn3 = document.getElementById('btn3');
+						//定义52张扑克牌 0 ~ 51
+						this.poker = [];
+						for(var i = 0; i < 52; i++){
+							this.poker.push(i);
+						}
+						//定义4种花色 方块、梅花、爱心、黑桃分别对应 0 ~ 3 ,对4取余
+						this.huaseNum = [0, 1, 2, 3];
+						this.huaseValue = ['fk', 'mh', 'ax', 'ht'];//对应的class
+						//定义每种花色的13张牌 A ~ K对应的 0 ~ 12 ,对13取余
+            this.paiNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+            this.paiValue = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+            this.btn1.addEventListener('click', this.onFaPai, false);//发牌
+            
+            this.btn3.addEventListener('click', this.onReset, false);//重置
+					},
+					onFaPai: function(){
+						console.log(dns.poker.length);
+						var random = Math.floor(Math.random() * dns.poker.length);//取0~51之间的整数 52张牌 但牌的长度会减少/
+						var random_4 = dns.poker[random] % 4, random_13 = dns.poker[random] % 13;
+						var arr = ['play1','play2','play3','play4','banker'];
+						//如果发完牌了 不要进入for循环
+						if(dns.poker.length === 40){
+							this.setAttribute('disabled', true);
+							this.style.background = '#bbb';
+							this.style.cursor = 'not-allowed';
+						}
+						for(var i = 0; i < arr.length; i++){
+							for(var j = 0; j < document.getElementById(arr[i]).getElementsByClassName('border').length; j++){
+								if(document.getElementById(arr[i]).getElementsByClassName('border')[j].innerText === ''){
+									var textt = document.createTextNode(dns.paiValue[random_13]);//牌面值
+							    var p = document.createElement('p');
+							    var classs = dns.huaseValue[random_4];//花色对应的class样式
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].classList.add(classs);
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].appendChild(textt);
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].appendChild(p);
+							    dns.poker.splice(random, 1);
+							    return false;
+								}
+							}
+						}
+					}
+				}
+				
+				dns.init();//初始化
+			})();
+		</script>
+	</body>
+</html>
