@@ -98,7 +98,7 @@
         width: 1000px;
         margin-top: 40px;
 			}
-			#box3 input{
+			input{
 				border: none;
 				background: #4b92d1;
 				color: #FFFFFF;
@@ -107,6 +107,10 @@
 				border-radius:6px ;
 				margin-left: 30px;
 				cursor: pointer;
+			}
+			#btn2, #btn3{
+				background: #bbb;
+				cursor: not-allowed;
 			}
 		</style>
 	</head>
@@ -178,8 +182,8 @@
 			</div>
 		  <div id="box3">
 		  	<input type="button" id="btn1" value="发牌" />
-		  	<input type="button" id="btn2" value="比较" />
-		  	<input type="button" id="btn3" value="重置" />
+		  	<input disabled="true" type="button" id="btn2" value="比较" />
+		  	<input disabled="true" type="button" id="btn3" value="重置" />
 		  </div>
 		</div>
 		
@@ -203,22 +207,33 @@
             this.paiNum = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
             this.paiValue = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
             this.btn1.addEventListener('click', this.onFaPai, false);//发牌
-            
+            this.btn2.addEventListener('click', this.onCompare, false);//比较
             this.btn3.addEventListener('click', this.onReset, false);//重置
 					},
 					onFaPai: function(){
-						console.log(dns.poker.length);
+						//console.log(dns.poker.length);
 						var random = Math.floor(Math.random() * dns.poker.length);//取0~51之间的整数 52张牌 但牌的长度会减少/
 						var random_4 = dns.poker[random] % 4, random_13 = dns.poker[random] % 13;
-						var arr = ['play1','play2','play3','play4','banker'];
+						var arr = ['play1','play2','play3','play4'];//玩家ID
 						//如果发完牌了 不要进入for循环
 						if(dns.poker.length === 40){
-							this.setAttribute('disabled', true);
 							this.style.background = '#bbb';
 							this.style.cursor = 'not-allowed';
+							this.setAttribute('disabled',true);
+							dns.btn2.style.background = '#4b92d1';
+							dns.btn2.style.cursor = 'pointer';
+							dns.btn2.removeAttribute('disabled');
 						}
+						//发牌后 重置按钮生效
+						if(dns.poker.length === 52){
+							dns.btn3.style.background = '#4b92d1';
+							dns.btn3.style.cursor = 'pointer';
+							dns.btn3.removeAttribute('disabled');
+						}
+						//dns.btn2.removeAttribute('disabled');
+						//第一次每人发一张
 						for(var i = 0; i < arr.length; i++){
-							for(var j = 0; j < document.getElementById(arr[i]).getElementsByClassName('border').length; j++){
+							for(var j = 0; j < document.getElementById(arr[i]).getElementsByClassName('border').length; j+=2){
 								if(document.getElementById(arr[i]).getElementsByClassName('border')[j].innerText === ''){
 									var textt = document.createTextNode(dns.paiValue[random_13]);//牌面值
 							    var p = document.createElement('p');
@@ -231,6 +246,80 @@
 								}
 							}
 						}
+						//第二次每人发两张
+						for(var i = 0; i < arr.length; i++){
+							for(var j = 1; j < document.getElementById(arr[i]).getElementsByClassName('border').length; j+=2){
+								if(document.getElementById(arr[i]).getElementsByClassName('border')[j].innerText === ''){
+									var textt = document.createTextNode(dns.paiValue[random_13]);//牌面值
+							    var p = document.createElement('p');
+							    var classs = dns.huaseValue[random_4];//花色对应的class样式
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].classList.add(classs);
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].appendChild(textt);
+							    document.getElementById(arr[i]).getElementsByClassName('border')[j].appendChild(p);
+							    dns.poker.splice(random, 1);
+							    return false;
+								}
+							}
+						}
+						//最后发庄家的牌
+						arr.push('banker');
+						for(var j = 0; j < document.getElementById('banker').getElementsByClassName('border').length; j++){
+								if(document.getElementById('banker').getElementsByClassName('border')[j].innerText === ''){
+									var textt = document.createTextNode(dns.paiValue[random_13]);//牌面值
+							    var p = document.createElement('p');
+							    var classs = dns.huaseValue[random_4];//花色对应的class样式
+							    document.getElementById('banker').getElementsByClassName('border')[j].classList.add(classs);
+							    document.getElementById('banker').getElementsByClassName('border')[j].appendChild(textt);
+							    document.getElementById('banker').getElementsByClassName('border')[j].appendChild(p);
+							    dns.poker.splice(random, 1);
+							    return false;
+								}
+					  }
+					},
+					onReset: function(){
+						dns.poker = [];//清空
+						for(var i = 0; i < 52; i++){
+							dns.poker.push(i);
+						}
+						//清空
+						var arr = ['play1','play2','play3','play4', 'banker'];
+						for(var i = 0; i < arr.length; i++){
+							for(var j = 0; j < document.getElementById(arr[i]).getElementsByClassName('border').length; j++){
+								document.getElementById(arr[i]).getElementsByClassName('border')[j].innerText = '';
+								document.getElementById(arr[i]).getElementsByClassName('border')[j].setAttribute('class','border');
+							}
+						}
+						dns.btn1.style.background = '#4b92d1';
+						dns.btn1.style.cursor = 'pointer';
+						dns.btn1.removeAttribute('disabled');
+						dns.btn2.style.background = '#bbb';
+						dns.btn2.style.cursor = 'not-allowed';
+						dns.btn2.setAttribute('disabled',true);
+						this.style.background = '#bbb';
+						this.style.cursor = 'not-allowed';
+						this.removeAttribute('disabled');
+					},
+					onCompare: function(){
+						//比牌先比牌型
+						var lavel = [0,1,2,3,4,5,6,7,8,9];
+						//先拿到5张庄家的牌，再进行组合比较
+						var val = [], play1 = [];
+						for(var i = 0; i < document.getElementById('banker').getElementsByClassName('border').length; i++){
+							val.push(document.getElementById('banker').getElementsByClassName('border')[i].innerText.trim());
+						}
+						var val_3 = [val[0]+val[1]+val[2], val[0]+val[1]+val[3], val[0]+val[1]+val[4], val[0]+val[2]+val[3], val[0]+val[2]+val[4], val[0]+val[3]+val[4], val[1]+val[2]+val[3], val[1]+val[2]+val[4], val[1]+val[3]+val[4], val[2]+val[3]+val[4]];
+						for(var j = 0; j < document.getElementById('play1').getElementsByClassName('border').length; j++){
+							play1.push(document.getElementById('play1').getElementsByClassName('border')[j].innerText.trim());
+						}
+						var val_5 = [];
+						for(var k = 0; k < val_3.length; k++){
+							val_5.push(play1[0]+play1[1]+val_3[k]);
+						}
+						for(var a = 0; a < val_5.length; a++){
+							var aa = val_5[a].split('');
+							console.log(aa);
+						}
+						console.log('暂时放弃~')
 					}
 				}
 				
